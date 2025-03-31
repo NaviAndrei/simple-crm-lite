@@ -10,29 +10,253 @@
     <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" />
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   </head>
   <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root">
-      <div class="container py-5">
-        <div class="card shadow">
-          <div class="card-body text-center">
-            <h1 class="my-5">Simple CRM Lite</h1>
-            <div class="alert alert-info">
-              <p>The CRM application is preparing to launch. The API is working as expected:</p>
-              <ul class="list-group my-3">
-                <li class="list-group-item bg-dark">Contact APIs are available at <code>/api/contacts</code></li>
-                <li class="list-group-item bg-dark">Health check endpoint at <code>/api</code></li>
+      <!-- Main Container -->
+      <div class="d-flex flex-column min-vh-100">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+          <div class="container">
+            <a class="navbar-brand" href="/">
+              <i class="fas fa-address-book me-2"></i>
+              CRM Lite
+            </a>
+            <button 
+              class="navbar-toggler" 
+              type="button" 
+              data-bs-toggle="collapse" 
+              data-bs-target="#navbarNav" 
+              aria-controls="navbarNav" 
+              aria-expanded="false" 
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                  <a class="nav-link active" href="/">Contacts</a>
+                </li>
               </ul>
-              <p>Please wait while the frontend builds or check your console for any errors.</p>
-            </div>
-            <div class="d-flex justify-content-center my-4">
-              <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
+              <div class="d-flex">
+                <a href="/add" class="btn btn-success">
+                  <i class="fas fa-plus me-1"></i> Add Contact
+                </a>
               </div>
             </div>
           </div>
-        </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="container py-4 flex-grow-1">
+          <div class="card bg-dark">
+            <div class="card-header bg-dark d-flex justify-content-between align-items-center">
+              <h2 class="mb-0">Contacts</h2>
+              <div class="form-group mb-0">
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="fas fa-search"></i>
+                  </span>
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Search contacts..."
+                  />
+                </div>
+              </div>
+            </div>
+            
+            <div class="card-body">
+              <div id="contacts-container">
+                <!-- Contacts will be loaded here via AJAX -->
+                <div class="text-center my-5">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                  <p class="mt-2">Loading contacts...</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-dark text-light py-3 text-center">
+          <div class="container">
+            <p class="mb-0">Simple CRM Lite © 2025</p>
+          </div>
+        </footer>
       </div>
+
+      <!-- JavaScript to load contacts -->
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          // Function to fetch and display contacts
+          async function loadContacts() {
+            try {
+              const response = await fetch('/api/contacts');
+              if (!response.ok) {
+                throw new Error('Failed to fetch contacts');
+              }
+              
+              const contacts = await response.json();
+              displayContacts(contacts);
+            } catch (error) {
+              console.error('Error:', error);
+              document.getElementById('contacts-container').innerHTML = `
+                <div class="alert alert-danger" role="alert">
+                  Failed to load contacts. Please try again later.
+                </div>
+              `;
+            }
+          }
+
+          // Function to display contacts
+          function displayContacts(contacts) {
+            const contactsContainer = document.getElementById('contacts-container');
+            
+            if (contacts.length === 0) {
+              contactsContainer.innerHTML = `
+                <div class="text-center my-4">
+                  <i class="fas fa-users fa-3x mb-3 text-secondary"></i>
+                  <h4>No contacts found</h4>
+                  <p>Add your first contact to get started.</p>
+                  <a href="/add" class="btn btn-primary mt-2">
+                    <i class="fas fa-plus me-1"></i> Add New Contact
+                  </a>
+                </div>
+              `;
+              return;
+            }
+            
+            // Create rows for contacts
+            let contactsHTML = '<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">';
+            
+            contacts.forEach(contact => {
+              contactsHTML += `
+                <div class="col">
+                  <div class="card h-100 bg-dark">
+                    <div class="card-body">
+                      <div class="d-flex justify-content-between align-items-start">
+                        <h5 class="card-title mb-1">${contact.name}</h5>
+                        <div class="dropdown">
+                          <button 
+                            class="btn btn-sm btn-outline-secondary" 
+                            type="button" 
+                            id="dropdownMenuButton-${contact.id}" 
+                            data-bs-toggle="dropdown" 
+                            aria-expanded="false"
+                          >
+                            <i class="fas fa-ellipsis-v"></i>
+                          </button>
+                          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton-${contact.id}">
+                            <li>
+                              <a class="dropdown-item" href="/edit/${contact.id}">
+                                <i class="fas fa-edit me-2"></i> Edit
+                              </a>
+                            </li>
+                            <li>
+                              <button 
+                                class="dropdown-item text-danger" 
+                                onclick="deleteContact(${contact.id})"
+                              >
+                                <i class="fas fa-trash-alt me-2"></i> Delete
+                              </button>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      
+                      ${contact.company ? `
+                        <p class="card-subtitle mb-2 text-muted">
+                          <i class="fas fa-building me-2"></i>
+                          ${contact.company}
+                        </p>
+                      ` : ''}
+                      
+                      <div class="mt-3">
+                        <p class="mb-1">
+                          <i class="fas fa-envelope me-2"></i>
+                          <a href="mailto:${contact.email}" class="text-info">
+                            ${contact.email}
+                          </a>
+                        </p>
+                        
+                        ${contact.phone ? `
+                          <p class="mb-1">
+                            <i class="fas fa-phone me-2"></i>
+                            <a href="tel:${contact.phone}" class="text-info">
+                              ${contact.phone}
+                            </a>
+                          </p>
+                        ` : ''}
+                      </div>
+                    </div>
+                    
+                    <div class="card-footer bg-dark d-flex justify-content-between">
+                      <small class="text-muted">
+                        Added: ${new Date(contact.created_at).toLocaleDateString()}
+                      </small>
+                      <a href="/edit/${contact.id}" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-edit me-1"></i> Edit
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              `;
+            });
+            
+            contactsHTML += '</div>';
+            contactsContainer.innerHTML = contactsHTML;
+          }
+
+          // Function to delete a contact
+          window.deleteContact = async function(id) {
+            if (confirm('Are you sure you want to delete this contact?')) {
+              try {
+                const response = await fetch(`/api/contacts/${id}`, {
+                  method: 'DELETE'
+                });
+                
+                if (!response.ok) {
+                  throw new Error('Failed to delete contact');
+                }
+                
+                // Reload contacts after deletion
+                loadContacts();
+              } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to delete contact. Please try again.');
+              }
+            }
+          };
+
+          // Add event listener for search
+          const searchInput = document.querySelector('input[placeholder="Search contacts..."]');
+          if (searchInput) {
+            searchInput.addEventListener('input', function() {
+              const searchTerm = this.value.toLowerCase();
+              const contactCards = document.querySelectorAll('.card');
+              
+              contactCards.forEach(card => {
+                const cardText = card.textContent.toLowerCase();
+                if (cardText.includes(searchTerm)) {
+                  card.closest('.col').style.display = '';
+                } else {
+                  card.closest('.col').style.display = 'none';
+                }
+              });
+            });
+          }
+
+          // Load contacts when page loads
+          loadContacts();
+        });
+      </script>
     </div>
   </body>
 </html>
