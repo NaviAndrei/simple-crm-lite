@@ -115,6 +115,29 @@
             }
           }
 
+          // Function to initialize search functionality
+          function initializeSearch() {
+            const searchInput = document.querySelector('input[placeholder="Search contacts..."]');
+            if (searchInput) {
+              searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const contactCards = document.querySelectorAll('.col .card');
+                
+                contactCards.forEach(card => {
+                  const parentCol = card.closest('.col');
+                  if (parentCol) {
+                    const cardText = card.textContent.toLowerCase();
+                    if (cardText.includes(searchTerm)) {
+                      parentCol.style.display = '';
+                    } else {
+                      parentCol.style.display = 'none';
+                    }
+                  }
+                });
+              });
+            }
+          }
+
           // Function to display contacts
           function displayContacts(contacts) {
             const contactsContainer = document.getElementById('contacts-container');
@@ -212,6 +235,9 @@
             
             contactsHTML += '</div>';
             contactsContainer.innerHTML = contactsHTML;
+            
+            // Initialize search after contacts are loaded
+            setTimeout(initializeSearch, 100);
           }
 
           // Function to delete a contact
@@ -235,23 +261,7 @@
             }
           };
 
-          // Add event listener for search
-          const searchInput = document.querySelector('input[placeholder="Search contacts..."]');
-          if (searchInput) {
-            searchInput.addEventListener('input', function() {
-              const searchTerm = this.value.toLowerCase();
-              const contactCards = document.querySelectorAll('.card');
-              
-              contactCards.forEach(card => {
-                const cardText = card.textContent.toLowerCase();
-                if (cardText.includes(searchTerm)) {
-                  card.closest('.col').style.display = '';
-                } else {
-                  card.closest('.col').style.display = 'none';
-                }
-              });
-            });
-          }
+          // Search is now initialized after contacts are loaded
 
           // Load contacts when page loads
           loadContacts();
