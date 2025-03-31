@@ -67,6 +67,7 @@ yarn-error.log*
 .settings/
 *.sublime-workspace
 *.sublime-project
+.cursor/
 
 # OS specific
 .DS_Store
@@ -89,25 +90,6 @@ logs/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-# AI related files
-.ai_prompts/
-ai_specs/
-generated/
-/prompts/
-.prompt_history/
-*_gpt.txt
-*_claude.txt
-*_ai_generated*
-*_ai_suggestions*
-.ai_assistant/
-.model_*
-.anthropic*
-.openai*
-completions/
-.completion_history/
-ai-samples/
-.cursor/
 
 # Large binary and data files
 *.zip

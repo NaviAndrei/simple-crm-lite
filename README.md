@@ -5,16 +5,20 @@ A lightweight Customer Relationship Management system built with Flask (backend)
 ## Technologies
 
 ### Backend
-- Python 3.8+
+- Python 3.13+
 - Flask - Web framework
 - SQLAlchemy - ORM for database interactions
 - Flask-Migrate - Database migrations
 
 ### Frontend
-- React.js - UI library
-- Material UI - Component library
-- Chart.js - Data visualization
-- Axios - API requests
+- Language: JavaScript
+- Core Library: React.js (for building the user interface)
+- UI Component Library: Material UI (MUI) (Used for components like tables, dialogs, buttons, chips in the Task section)
+- HTTP Client: Axios (for making API requests to the Flask backend)
+- Routing: React Router (for handling navigation within the single-page application)
+- Date Formatting: date-fns (Used for formatting dates, e.g., in the task list)
+- State Management: React Context API (Used for managing global state like notifications)
+- Styling: CSS(custom CSS and Bootstrap/MUI styling)
 
 ### Database
 - SQLite (development)
@@ -62,8 +66,8 @@ A lightweight Customer Relationship Management system built with Flask (backend)
 ## Installation
 
 ### Prerequisites
-- Python 3.8 or higher
-- Node.js 14 or higher
+- Python 3.13+
+- Node.js 14+
 - npm or yarn
 
 ### Backend Setup
@@ -122,28 +126,7 @@ Once both servers are running:
 - Backend API will be available at http://localhost:5000
 - Frontend will be available at http://localhost:3000
 
-Log in and start managing your contacts, companies, and sales pipeline.
-
-## Project Structure
-
-```
-SimpleCrmLite/
-├── backend/            # Flask backend
-│   ├── app.py          # Main application file
-│   ├── models.py       # Database models
-│   ├── routes.py       # API endpoints
-│   └── ...
-├── frontend/           # React frontend
-│   ├── public/         # Static files
-│   ├── src/            # Source code
-│   │   ├── components/ # React components
-│   │   ├── services/   # API services
-│   │   └── ...
-│   └── ...
-├── instance/           # Database files
-├── migrations/         # Database migrations
-└── ...
-```
+You can start managing your contacts, companies, and sales pipeline.
 
 ## What I Learned
 
@@ -174,7 +157,3 @@ Feel free to contact me for any questions or feedback about this project:
 - **Name**: Andrei Ivan
 - **Email**: andrei.ivan1208@gmail.com
 - **GitHub**: [NaviAndrei](https://github.com/NaviAndrei)
-
----
-
-*Created by Andrei Ivan as a portfolio project showcasing full-stack development skills.* 
