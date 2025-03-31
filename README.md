@@ -2,6 +2,14 @@
 
 A lightweight Customer Relationship Management system built with Flask (backend) and React (frontend). This portfolio project demonstrates my full-stack development skills and understanding of business application architecture.
 
+## Screemshots
+
+![Dashboard](https://github.com/NaviAndrei/simple-crm-lite/blob/main/screenshots/Dashboard.png)
+![Companies Page](https://github.com/NaviAndrei/simple-crm-lite/blob/main/screenshots/Companies-Page.png)
+![Sales-Pipeline-Page](https://github.com/NaviAndrei/simple-crm-lite/blob/main/screenshots/Sales-Pipeline.png)
+![Task Management-Page](https://github.com/NaviAndrei/simple-crm-lite/blob/main/screenshots/Task-Management.png)
+![Add-Contact-Page](https://github.com/NaviAndrei/simple-crm-lite/blob/main/screenshots/Add-New-Contact.png)
+
 ## Technologies
 
 ### Backend
