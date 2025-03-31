@@ -1,0 +1,26 @@
+.dropdown-menu {
+    z-index: 1000;
+    margin-top: 0.5rem;
+    background-color: var(--bs-body-bg);
+    border: 1px solid var(--bs-border-color);
+    border-radius: 0.375rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  }
+  
+  .dropdown-item {
+    padding: 0.5rem 1rem;
+    color: var(--bs-body-color);
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+  }
+  
+  .dropdown-item:hover {
+    background-color: var(--bs-tertiary-bg);
+  }
+  
+  .dropdown-item.text-danger:hover {
+    background-color: var(--bs-danger-bg-subtle);
+  }

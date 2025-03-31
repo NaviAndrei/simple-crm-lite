@@ -4,6 +4,8 @@ import ContactCard from './ContactCard';
 import { deleteContact } from '../services/contactService';
 
 function ContactList({ contacts, loading, refreshContacts }) {
+  console.log("ContactList received contacts prop:", contacts);
+
   const [searchTerm, setSearchTerm] = useState('');
   const [deleteStatus, setDeleteStatus] = useState({ loading: false, error: null });
 
@@ -12,11 +14,17 @@ function ContactList({ contacts, loading, refreshContacts }) {
     const search = searchTerm.toLowerCase();
     return (
       contact.name.toLowerCase().includes(search) ||
-      (contact.company && contact.company.toLowerCase().includes(search)) ||
+      (contact.company && typeof contact.company === 'string' 
+        ? contact.company.toLowerCase().includes(search)
+        : contact.company && typeof contact.company === 'object' && contact.company.name 
+          ? contact.company.name.toLowerCase().includes(search)
+          : false) ||
       contact.email.toLowerCase().includes(search) ||
       (contact.phone && contact.phone.includes(search))
     );
   });
+
+
 
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this contact?')) {
@@ -46,9 +54,9 @@ function ContactList({ contacts, loading, refreshContacts }) {
 
   return (
     <div className="card bg-dark">
-      <div className="card-header bg-dark d-flex justify-content-between align-items-center">
+      <div className="card-header bg-dark">
         <h2 className="mb-0">Contacts</h2>
-        <div className="form-group mb-0">
+        <div className="form-group mt-3">
           <div className="input-group">
             <span className="input-group-text">
               <i className="fas fa-search"></i>

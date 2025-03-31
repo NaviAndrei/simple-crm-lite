@@ -1,4 +1,5 @@
 import os
+import sys
 import logging
 from flask import send_from_directory, Flask
 from backend.app import app
@@ -6,6 +7,10 @@ from backend.app import app
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
+
+# Add the backend directory to Python path
+current_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.join(current_dir, 'backend'))
 
 # Serve static files
 @app.route('/static/<path:filename>')
@@ -46,4 +51,4 @@ def serve(path):
         return send_from_directory(static_folder, 'index.html')
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5001, debug=True)
